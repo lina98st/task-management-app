@@ -14,11 +14,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Taskflow",
-    template: "%s | Taskflow",
+    default: "Task Management App",
+    template: "%s | Task Management App",
   },
   description:
-    "Taskflow is a modern task management application for organizing, tracking, and completing daily work.",
+    "A modern task management application for organizing, tracking, and completing daily work.",
   keywords: [
     "task management",
     "productivity",
