@@ -1,8 +1,8 @@
-# Taskflow
+# Task Management App
 
 A modern task management application built with Next.js for organizing, tracking and completing daily work.
 
-Taskflow is currently under active development and serves as both a learning project and a portfolio application.
+Task Management App is currently under active development and serves as both a learning project and a portfolio application.
 
 > Currently in development
 
@@ -43,7 +43,7 @@ Taskflow is currently under active development and serves as both a learning pro
 - Authentication with Auth.js
 - Protected dashboard routes
 - PostgreSQL database integration with Prisma
-- User specific task management
+- User-specific task management
 - Create, edit and delete tasks
 - Task status management
 - Due dates
@@ -90,8 +90,8 @@ Taskflow is currently under active development and serves as both a learning pro
 ### Installation
 
 ```bash
-git clone https://github.com/lina98st/taskflow.git
-cd taskflow
+git clone https://github.com/lina98st/task-management-app.git
+cd task-management-app
 npm install
 ```
 
@@ -101,8 +101,7 @@ Create a `.env` file in the project root.
 
 ```env
 DATABASE_URL=""
-NEXTAUTH_SECRET=""
-NEXTAUTH_URL="http://localhost:3000"
+AUTH_SECRET=""
 ```
 
 ### Development
