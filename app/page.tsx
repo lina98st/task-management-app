@@ -54,8 +54,7 @@ export default function Home() {
         </h1>
 
         <p className="mt-6 max-w-2xl text-base leading-7 text-[var(--text-muted)] sm:text-lg">
-          Taskflow gives you one focused place to create, organize and complete
-          your daily tasks.
+          One focused place to create, organize and complete your daily tasks.
         </p>
 
         <div className="mt-10 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
@@ -163,7 +162,7 @@ export default function Home() {
 
       <footer className="border-t border-[var(--border)]">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 text-sm text-[var(--text-muted)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <p>© 2026 Taskflow</p>
+          <p>© 2026 Task Management App</p>
           <p>Created by Alina Schmidt</p>
         </div>
       </footer>
