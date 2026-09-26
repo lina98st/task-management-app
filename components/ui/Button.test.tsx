@@ -9,4 +9,13 @@ describe("Button", () => {
       screen.getByRole("button", { name: "Save task" }),
     ).toBeInTheDocument();
   });
+
+  it("uses button type by default", () => {
+    render(<Button>Save task</Button>);
+
+    expect(screen.getByRole("button", { name: "Save task" })).toHaveAttribute(
+      "type",
+      "button",
+    );
+  });
 });
