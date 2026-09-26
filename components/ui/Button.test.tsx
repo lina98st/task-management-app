@@ -18,4 +18,13 @@ describe("Button", () => {
       "button",
     );
   });
+
+  it("accepts a custom button type", () => {
+    render(<Button type="submit">Save task</Button>);
+
+    expect(screen.getByRole("button", { name: "Save task" })).toHaveAttribute(
+      "type",
+      "submit",
+    );
+  });
 });
