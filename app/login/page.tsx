@@ -1,9 +1,8 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
-import { loginUser } from "./actions";
+import LoginForm from "./LoginForm";
 
 export default async function LoginPage({
   searchParams,
@@ -11,6 +10,7 @@ export default async function LoginPage({
   searchParams: Promise<{ registered?: string }>;
 }) {
   const { registered } = await searchParams;
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-[var(--bg-base)] px-4 py-10">
       <Card className="w-full max-w-md p-6 sm:p-8">
@@ -32,47 +32,7 @@ export default async function LoginPage({
           </div>
         )}
 
-        <form action={loginUser}>
-          <div className="mb-5">
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium text-white"
-            >
-              Email
-            </label>
-
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
-
-          <div className="mb-6">
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium text-white"
-            >
-              Password
-            </label>
-
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          <Button type="submit" fullWidth>
-            Sign in
-          </Button>
-        </form>
+        <LoginForm />
 
         <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-[var(--border)]" />
