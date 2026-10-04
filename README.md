@@ -1,8 +1,8 @@
 # Task Management App
 
-A modern task management application built with Next.js for organizing, tracking and completing daily work.
+A full-stack project management application built with Next.js, TypeScript and PostgreSQL for organizing projects, managing tasks and tracking progress.
 
-Task Management App is currently under active development and serves as both a learning project and a portfolio application.
+The application is being developed as a production-style portfolio project with authentication, user-specific data, testing and a deployed production environment.
 
 > Currently in development
 
@@ -21,6 +21,7 @@ Task Management App is currently under active development and serves as both a l
 - Next.js Server Actions
 - Prisma ORM
 - PostgreSQL
+- Neon
 
 ### Authentication
 
@@ -30,6 +31,10 @@ Task Management App is currently under active development and serves as both a l
 
 - Jest
 - React Testing Library
+
+### Deployment
+
+- Vercel
 
 ---
 
@@ -42,7 +47,6 @@ Task Management App is currently under active development and serves as both a l
 - User registration and login
 - Authentication with Auth.js
 - Protected dashboard routes
-- PostgreSQL database integration with Prisma
 - User-specific task management
 - Create, edit and delete tasks
 - Task status management
@@ -51,12 +55,16 @@ Task Management App is currently under active development and serves as both a l
 - Task sorting by due date and status
 - Dashboard statistics
 - Recent tasks overview
+- Server-side form validation and error handling
+- Automated component tests
+- Production deployment with Vercel and Neon
 
 ### Planned
 
-- Form validation and improved error handling
-- Testing with Jest and React Testing Library
-- Deployment with Vercel and Neon
+- Project management
+- Project-specific tasks
+- Task priorities
+- AI-powered project management features
 
 ---
 
@@ -75,8 +83,18 @@ Task Management App is currently under active development and serves as both a l
 - [x] Task filtering
 - [x] Task sorting
 - [x] Dashboard statistics
-- [ ] Testing
-- [ ] Deployment
+- [x] Form validation and error handling
+- [x] Testing
+- [x] Production deployment
+- [ ] Project management
+- [ ] Task priorities
+- [ ] AI features
+
+---
+
+## Live Demo
+
+https://task-management-app-cyan-kappa.vercel.app/
 
 ---
 
