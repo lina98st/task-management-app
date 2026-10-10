@@ -44,6 +44,15 @@ export default async function EditTaskPage({
     notFound();
   }
 
+  const projects = await prisma.project.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
   return (
     <div className="mx-auto max-w-xl">
       <header className="mb-8">
@@ -77,6 +86,34 @@ export default async function EditTaskPage({
               rows={4}
               defaultValue={task.description ?? ""}
             />
+          </div>
+
+          <div className="mb-5">
+            <Label htmlFor="projectId">Project</Label>
+
+            <Select
+              id="projectId"
+              name="projectId"
+              defaultValue={task.projectId ?? ""}
+            >
+              <option value="">No project</option>
+
+              {projects.map((project) => (
+                <option key={project.id} value={project.id}>
+                  {project.name}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          <div className="mb-5">
+            <Label htmlFor="priority">Priority</Label>
+
+            <Select id="priority" name="priority" defaultValue={task.priority}>
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+            </Select>
           </div>
 
           <div className="mb-5">

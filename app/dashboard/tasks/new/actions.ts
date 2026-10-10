@@ -1,9 +1,14 @@
+
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
-import { TaskStatus } from "@/app/generated/prisma/client";
+import {
+  TaskStatus,
+  TaskPriority,
+} from "@/app/generated/prisma/client";
 
 export async function createTask(formData: FormData) {
   const session = await auth();
@@ -15,6 +20,8 @@ export async function createTask(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const statusValue = String(formData.get("status") ?? "todo");
+  const priorityValue = String(formData.get("priority") ?? "MEDIUM");
+  const projectId = String(formData.get("projectId") ?? "").trim();
   const dueDateValue = String(formData.get("dueDate") ?? "");
 
   if (!title) {
@@ -37,15 +44,45 @@ export async function createTask(formData: FormData) {
     done: TaskStatus.DONE,
   };
 
+  const priorityMap: Record<string, TaskPriority> = {
+    LOW: TaskPriority.LOW,
+    MEDIUM: TaskPriority.MEDIUM,
+    HIGH: TaskPriority.HIGH,
+  };
+
+  if (projectId) {
+    const project = await prisma.project.findFirst({
+      where: {
+        id: projectId,
+        userId: user.id,
+      },
+    });
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+  }
+
   await prisma.task.create({
     data: {
       title,
       description: description || null,
       status: statusMap[statusValue] ?? TaskStatus.TODO,
+      priority: priorityMap[priorityValue] ?? TaskPriority.MEDIUM,
       dueDate: dueDateValue ? new Date(dueDateValue) : null,
       userId: user.id,
+      projectId: projectId || null,
     },
   });
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/tasks");
+  revalidatePath("/dashboard/projects");
+
+  if (projectId) {
+    revalidatePath(`/dashboard/projects/${projectId}`);
+    redirect(`/dashboard/projects/${projectId}`);
+  }
 
   redirect("/dashboard/tasks");
 }

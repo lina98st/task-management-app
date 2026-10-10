@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { auth } from "@/auth";
+import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
@@ -7,7 +10,29 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { createTask } from "./actions";
 
-export default function NewTaskPage() {
+type Props = {
+  searchParams: Promise<{ projectId?: string }>;
+};
+
+export default async function NewTaskPage({ searchParams }: Props) {
+  const { projectId } = await searchParams;
+  const session = await auth();
+
+  if (!session?.user?.email) {
+    redirect("/login");
+  }
+
+  const projects = await prisma.project.findMany({
+    where: {
+      user: {
+        email: session.user.email,
+      },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
   return (
     <div className="mx-auto max-w-xl">
       <header className="mb-8">
@@ -22,7 +47,6 @@ export default function NewTaskPage() {
         <form action={createTask}>
           <div className="mb-5">
             <Label htmlFor="title">Title</Label>
-
             <Input
               id="title"
               name="title"
@@ -34,7 +58,6 @@ export default function NewTaskPage() {
 
           <div className="mb-5">
             <Label htmlFor="description">Description</Label>
-
             <Textarea
               id="description"
               name="description"
@@ -44,8 +67,36 @@ export default function NewTaskPage() {
           </div>
 
           <div className="mb-5">
-            <Label htmlFor="status">Status</Label>
+            <Label htmlFor="projectId">Project</Label>
+            <Select
+              id="projectId"
+              name="projectId"
+              defaultValue={
+                projects.some((project) => project.id === projectId)
+                  ? projectId
+                  : ""
+              }
+            >
+              <option value="">No project</option>
+              {projects.map((project) => (
+                <option key={project.id} value={project.id}>
+                  {project.name}
+                </option>
+              ))}
+            </Select>
+          </div>
 
+          <div className="mb-5">
+            <Label htmlFor="priority">Priority</Label>
+            <Select id="priority" name="priority" defaultValue="MEDIUM">
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+            </Select>
+          </div>
+
+          <div className="mb-5">
+            <Label htmlFor="status">Status</Label>
             <Select id="status" name="status">
               <option value="todo">Todo</option>
               <option value="in-progress">In progress</option>
@@ -55,7 +106,6 @@ export default function NewTaskPage() {
 
           <div className="mb-7">
             <Label htmlFor="dueDate">Due date</Label>
-
             <Input id="dueDate" name="dueDate" type="date" />
           </div>
 

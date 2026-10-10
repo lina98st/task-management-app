@@ -1,3 +1,4 @@
+
 "use server";
 
 import { auth } from "@/auth";
@@ -41,6 +42,11 @@ export async function deleteTask(taskId: string) {
 
   revalidatePath("/dashboard/tasks");
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/projects");
+
+  if (task.projectId) {
+    revalidatePath(`/dashboard/projects/${task.projectId}`);
+  }
 }
 
 export async function updateTask(taskId: string, formData: FormData) {
@@ -74,6 +80,8 @@ export async function updateTask(taskId: string, formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const statusValue = String(formData.get("status") ?? "todo");
+  const priorityValue = String(formData.get("priority") ?? "MEDIUM");
+  const projectId = String(formData.get("projectId") ?? "").trim();
   const dueDateValue = String(formData.get("dueDate") ?? "");
 
   if (!title) {
@@ -86,6 +94,25 @@ export async function updateTask(taskId: string, formData: FormData) {
     done: "DONE",
   } as const;
 
+  const priorityMap = {
+    LOW: "LOW",
+    MEDIUM: "MEDIUM",
+    HIGH: "HIGH",
+  } as const;
+
+  if (projectId) {
+    const project = await prisma.project.findFirst({
+      where: {
+        id: projectId,
+        userId: user.id,
+      },
+    });
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+  }
+
   await prisma.task.update({
     where: {
       id: task.id,
@@ -94,11 +121,25 @@ export async function updateTask(taskId: string, formData: FormData) {
       title,
       description: description || null,
       status: statusMap[statusValue as keyof typeof statusMap] ?? "TODO",
+      priority:
+        priorityMap[priorityValue as keyof typeof priorityMap] ?? "MEDIUM",
+      projectId: projectId || null,
       dueDate: dueDateValue ? new Date(dueDateValue) : null,
     },
   });
 
   revalidatePath("/dashboard/tasks");
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/projects");
+
+  if (task.projectId) {
+    revalidatePath(`/dashboard/projects/${task.projectId}`);
+  }
+
+  if (projectId) {
+    revalidatePath(`/dashboard/projects/${projectId}`);
+    redirect(`/dashboard/projects/${projectId}`);
+  }
+
   redirect("/dashboard/tasks");
 }
