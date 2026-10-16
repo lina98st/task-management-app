@@ -60,6 +60,13 @@ export default async function ProjectPage({ params }: Props) {
           ← Back to projects
         </Link>
 
+        <Link
+          href={`/dashboard/projects/${project.id}/edit`}
+          className="ml-auto rounded-lg border border-gray-700 px-4 py-2 font-medium hover:bg-gray-800"
+        >
+          Edit project
+        </Link>
+
         <div className="mt-4 flex items-center justify-between gap-4">
           <h1 className="text-3xl font-bold">{project.name}</h1>
 
